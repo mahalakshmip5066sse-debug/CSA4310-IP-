@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Cake Ordering System</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #fff0f5;
+            text-align: center;
+        }
+        h1 { background: #c2185b; color: white; padding: 15px; }
+        .box {
+            background: white;
+            padding: 15px;
+            margin: 15px auto;
+            width: 85%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        button { background: #c2185b; color: white; border: 0; }
+    </style>
+</head>
+<body>
+
+<h1>Online Cake Ordering System</h1>
+
+<div class="box">
+    <h2>Register / Login</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="register()">Register</button>
+    <p id="message"></p>
+</div>
+
+<div class="box">
+    <h2>Search and Filter Cakes</h2>
+    <input id="search" placeholder="Search cake">
+    <select id="category">
+        <option value="All">All Categories</option>
+        <option value="Birthday">Birthday</option>
+        <option value="Chocolate">Chocolate</option>
+        <option value="Wedding">Wedding</option>
+    </select>
+    <select id="price">
+        <option value="All">All Prices</option>
+        <option value="500">Below Rs.500</option>
+        <option value="1000">Below Rs.1000</option>
+    </select>
+    <button onclick="showCakes()">Search</button>
+    <div id="cakes"></div>
+</div>
+
+<div class="box">
+    <h2>Cake Description</h2>
+    <p id="description">Select a cake to view its description.</p>
+</div>
+
+<div class="box">
+    <h2>Shopping Cart</h2>
+    <div id="cart">Cart is empty</div>
+    <button onclick="placeOrder()">Place Order</button>
+</div>
+
+<div class="box">
+    <h2>Shipping Address</h2>
+    <input id="address" placeholder="Enter delivery address">
+    <button onclick="saveAddress()">Save / Update Address</button>
+    <p id="addressMsg"></p>
+</div>
+
+<div class="box">
+    <h2>My Order / Shipping Status</h2>
+    <p id="order">No orders placed.</p>
+    <button onclick="trackOrder()">Track Order</button>
+</div>
+
+<script>
+let users = [];
+let loggedIn = false;
+let cart = [];
+let orders = [];
+let shippingAddress = "";
+
+let cakeList = [
+    {name:"Chocolate Cake", category:"Chocolate", price:450,
+     desc:"Delicious chocolate cake."},
+    {name:"Birthday Cake", category:"Birthday", price:700,
+     desc:"Special cake for birthdays."},
+    {name:"Wedding Cake", category:"Wedding", price:1500,
+     desc:"Beautiful cake for weddings."},
+    {name:"Vanilla Cake", category:"Birthday", price:350,
+     desc:"Soft and tasty vanilla cake."}
+];
+
+function register() {
+    if (!username.value || !password.value) {
+        message.innerHTML = "Enter username and password.";
+        return;
+    }
+    if (users.some(u => u.name === username.value)) {
+        message.innerHTML = "Username already exists.";
+        return;
+    }
+    users.push({name:username.value, pass:password.value});
+    message.innerHTML = "Registration successful.";
+}
+
+function login() {
+    if (users.some(u => u.name === username.value &&
+        u.pass === password.value)) {
+        loggedIn = true;
+        message.innerHTML = "Login successful.";
+    } else {
+        message.innerHTML = "Register first or check your details.";
+    }
+}
+
+function showCakes() {
+    let result = cakeList.filter(c =>
+        c.name.toLowerCase().includes(search.value.toLowerCase()) &&
+        (category.value === "All" || c.category === category.value) &&
+        (price.value === "All" || c.price < Number(price.value))
+    );
+
+    cakes.innerHTML = "";
+    result.forEach(c => {
+        cakes.innerHTML += "<p>" + c.name + " - Rs." + c.price +
+        "<br><button onclick=\"viewCake('" + c.name +
+        "')\">View Description</button>" +
+        "<button onclick=\"addCart('" + c.name +
+        "')\">Add to Cart</button></p>";
+    });
+
+    if (result.length === 0) cakes.innerHTML = "No cakes found.";
+}
+
+function viewCake(name) {
+    let c = cakeList.find(x => x.name === name);
+    description.innerHTML = c.desc + "<br>Price: Rs." + c.price;
+}
+
+function addCart(name) {
+    let c = cakeList.find(x => x.name === name);
+    cart.push(c);
+    showCart();
+}
+
+function showCart() {
+    let total = cart.reduce((sum, c) => sum + c.price, 0);
+    document.getElementById("cart").innerHTML =
+        cart.map(c => c.name + " - Rs." + c.price).join("<br>") +
+        "<br>Total: Rs." + total;
+}
+
+function saveAddress() {
+    if (!address.value.trim()) {
+        addressMsg.innerHTML = "Enter shipping address.";
+        return;
+    }
+    shippingAddress = address.value.trim();
+    addressMsg.innerHTML = "Address saved successfully.";
+}
+
+function placeOrder() {
+    if (!loggedIn) {
+        alert("Please login first.");
+        return;
+    }
+    if (cart.length === 0 || !shippingAddress) {
+        alert("Add a cake and shipping address.");
+        return;
+    }
+
+    let total = cart.reduce((sum, c) => sum + c.price, 0);
+    orders.push({
+        items: cart.map(c => c.name).join(", "),
+        total: total,
+        address: shippingAddress,
+        status: "Order Placed"
+    });
+
+    cart = [];
+    showCart();
+    order.innerHTML = "Order placed successfully! Total: Rs." + total;
+}
+
+function trackOrder() {
+    if (orders.length === 0) {
+        order.innerHTML = "No orders available.";
+        return;
+    }
+    let o = orders[orders.length - 1];
+    order.innerHTML = "Cakes: " + o.items +
+        "<br>Total: Rs." + o.total +
+        "<br>Address: " + o.address +
+        "<br>Shipping Status: " + o.status;
+}
+
+showCakes();
+</script>
+
+</body>
+</html>
