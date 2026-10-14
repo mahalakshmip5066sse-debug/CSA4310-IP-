@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beauty Parlour Booking</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #fff0f5;
+            text-align: center;
+        }
+        h1 { background: #ad1457; color: white; padding: 15px; }
+        .box {
+            background: white;
+            padding: 15px;
+            margin: 15px auto;
+            width: 85%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+        input, select, button, textarea {
+            padding: 10px;
+            margin: 5px;
+        }
+        button { background: #ad1457; color: white; border: 0; }
+    </style>
+</head>
+<body>
+
+<h1>Beauty Parlour Appointment Booking</h1>
+
+<div class="box">
+    <h2>Register / Login</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="register()">Register</button>
+    <button onclick="login()">Login</button>
+    <p id="message"></p>
+</div>
+
+<div class="box">
+    <h2>Available Services</h2>
+    <select id="service">
+        <option value="Hair Cut">Hair Cut - Rs.200</option>
+        <option value="Facial">Facial - Rs.500</option>
+        <option value="Hair Spa">Hair Spa - Rs.700</option>
+        <option value="Makeup">Makeup - Rs.1500</option>
+    </select>
+
+    <select id="stylist">
+        <option>Priya</option>
+        <option>Divya</option>
+        <option>Anu</option>
+    </select>
+
+    <p>Choose Appointment Date and Time</p>
+    <input id="date" type="date">
+    <select id="time">
+        <option>10:00 AM</option>
+        <option>11:00 AM</option>
+        <option>12:00 PM</option>
+        <option>02:00 PM</option>
+        <option>03:00 PM</option>
+    </select>
+
+    <button onclick="book()">Book Appointment</button>
+    <p id="bookingMessage"></p>
+</div>
+
+<div class="box">
+    <h2>My Appointments</h2>
+    <div id="appointments">No appointments yet.</div>
+    <button onclick="viewAppointments()">View Appointments</button>
+    <input id="cancelId" type="number" placeholder="Appointment ID">
+    <button onclick="cancel()">Cancel Appointment</button>
+</div>
+
+<div class="box">
+    <h2>Customer Feedback</h2>
+    <textarea id="feedback" placeholder="Enter your feedback"></textarea>
+    <button onclick="sendFeedback()">Submit Feedback</button>
+</div>
+
+<div class="box">
+    <h2>Salon Manager Report</h2>
+    <button onclick="report()">View Report</button>
+    <p id="reportResult"></p>
+</div>
+
+<script>
+let users = [];
+let loggedIn = false;
+let bookings = [];
+let nextId = 1;
+
+function register() {
+    if (!username.value || !password.value) {
+        message.innerHTML = "Enter username and password.";
+        return;
+    }
+    if (users.some(u => u.name === username.value)) {
+        message.innerHTML = "Username already exists.";
+        return;
+    }
+    users.push({name: username.value, pass: password.value});
+    message.innerHTML = "Registration successful.";
+}
+
+function login() {
+    if (users.some(u => u.name === username.value &&
+        u.pass === password.value)) {
+        loggedIn = true;
+        message.innerHTML = "Login successful.";
+    } else {
+        message.innerHTML = "Please register or check login details.";
+    }
+}
+
+function book() {
+    if (!loggedIn) {
+        alert("Please login first.");
+        return;
+    }
+
+    if (!date.value || date.value < new Date().toLocaleDateString('en-CA')) {
+        alert("Choose a valid appointment date.");
+        return;
+    }
+
+    let exists = bookings.some(b =>
+        b.date === date.value && b.time === time.value &&
+        b.stylist === stylist.value && !b.cancelled
+    );
+
+    if (exists) {
+        alert("This stylist is already booked for that time.");
+        return;
+    }
+
+    let prices = {
+        "Hair Cut": 200, "Facial": 500,
+        "Hair Spa": 700, "Makeup": 1500
+    };
+
+    let b = {
+        id: nextId++,
+        user: username.value,
+        service: service.value,
+        stylist: stylist.value,
+        date: date.value,
+        time: time.value,
+        price: prices[service.value],
+        cancelled: false
+    };
+
+    bookings.push(b);
+    bookingMessage.innerHTML =
+        "Appointment booked! ID: " + b.id +
+        "<br>Payment: Rs." + b.price + " (demo only)";
+    viewAppointments();
+}
+
+function viewAppointments() {
+    let list = bookings.filter(b =>
+        b.user === username.value && !b.cancelled
+    );
+
+    appointments.innerHTML = list.length ? list.map(b =>
+        "ID: " + b.id + " | " + b.service +
+        " | Stylist: " + b.stylist +
+        " | " + b.date + " " + b.time +
+        " | Rs." + b.price
+    ).join("<hr>") : "No active appointments.";
+}
+
+function cancel() {
+    let b = bookings.find(b =>
+        b.id === Number(cancelId.value) &&
+        b.user === username.value && !b.cancelled
+    );
+
+    if (b) {
+        b.cancelled = true;
+        bookingMessage.innerHTML = "Appointment cancelled.";
+        viewAppointments();
+    } else {
+        bookingMessage.innerHTML = "Appointment not found.";
+    }
+}
+
+function sendFeedback() {
+    if (feedback.value.trim()) {
+        alert("Thank you for your feedback!");
+        feedback.value = "";
+    } else {
+        alert("Please enter feedback.");
+    }
+}
+
+function report() {
+    reportResult.innerHTML =
+        "Total appointments: " + bookings.length +
+        "<br>Active appointments: " +
+        bookings.filter(b => !b.cancelled).length;
+}
+</script>
+
+</body>
+</html>

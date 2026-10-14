@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Room Booking</title>
+</head>
+<body>
+
+<h1>Hotel Room Booking System</h1>
+
+<h2>1. User Registration</h2>
+<form onsubmit="alert('Registered Successfully'); return false;">
+    Name: <input required><br><br>
+    Email: <input type="email" required><br><br>
+    Password: <input type="password" required><br><br>
+    <input type="submit" value="Register">
+</form>
+
+<h2>2. Login</h2>
+<form onsubmit="alert('Login Successful'); return false;">
+    Email: <input type="email" required><br><br>
+    Password: <input type="password" required><br><br>
+    <input type="submit" value="Login">
+</form>
+
+<h2>3. Check Room Availability</h2>
+<form onsubmit="checkRoom(); return false;">
+    Room Type:
+    <select id="room">
+        <option>Single</option>
+        <option>Double</option>
+        <option>Deluxe</option>
+        <option>Suite</option>
+    </select><br><br>
+    Check-in: <input type="date" id="in" required><br><br>
+    Check-out: <input type="date" id="out" required><br><br>
+    Guests: <input type="number" min="1" required><br><br>
+    <input type="submit" value="Check Availability">
+</form>
+<p id="availability"></p>
+
+<h2>4. Book a Room</h2>
+<form onsubmit="bookRoom(); return false;">
+    Customer Name: <input id="name" required><br><br>
+    Room Type:
+    <select id="type">
+        <option>Single</option>
+        <option>Double</option>
+        <option>Deluxe</option>
+        <option>Suite</option>
+    </select><br><br>
+    Arrival Date: <input type="date" id="arrival" required><br><br>
+    Departure Date: <input type="date" id="departure" required><br><br>
+    <input type="submit" value="Book Room">
+</form>
+<p id="booking"></p>
+
+<h2>5. Booking History</h2>
+<button onclick="showHistory()">View History</button>
+<p id="history"></p>
+
+<h2>6. Modify Booking</h2>
+Booking ID: <input id="modifyId"><br><br>
+New Arrival Date: <input type="date" id="newDate"><br><br>
+<button onclick="modifyBooking()">Modify Booking</button>
+
+<h2>7. Cancel Booking</h2>
+Booking ID: <input id="cancelId">
+<button onclick="cancelBooking()">Cancel</button>
+
+<h2>8. My Profile</h2>
+Name: <input id="profileName"><br><br>
+Email: <input id="profileEmail" type="email"><br><br>
+<button onclick="alert('Profile Updated')">Update Profile</button>
+
+<h2>9. Admin - Manage Rooms</h2>
+Room Type:
+<select id="adminRoom">
+    <option>Single</option>
+    <option>Double</option>
+    <option>Deluxe</option>
+    <option>Suite</option>
+</select><br><br>
+Room Quantity: <input type="number" id="quantity"><br><br>
+Room Price: <input type="number" id="price"><br><br>
+<button onclick="updateRoom()">Update Room</button>
+<p id="roomDetails"></p>
+
+<h2>10. Admin - Manage Booking</h2>
+Booking ID: <input id="adminId"><br><br>
+<button onclick="adminCancel()">Cancel Booking</button>
+
+<h2>11. About Us</h2>
+<p>Our hotel provides comfortable rooms and quality service.</p>
+
+<h2>12. Contact Us</h2>
+<p>Email: hotel@example.com | Phone: 9876543210</p>
+
+<h2>13. Customer Service FAQ</h2>
+<p>Q: What is check-in time?</p>
+<p>A: Check-in time is 12 PM.</p>
+<p>Q: Can I cancel a booking?</p>
+<p>A: Yes, subject to the cancellation policy.</p>
+
+<h2>14. Local Travel Guide</h2>
+<p>Visit nearby tourist places, restaurants and shopping areas.</p>
+
+<h2>15. Privacy Policy</h2>
+<p>Customer details should be kept private and secure.</p>
+
+<script>
+let bookings = [];
+let rooms = {
+    Single: {qty: 5, price: 1000},
+    Double: {qty: 5, price: 1800},
+    Deluxe: {qty: 3, price: 2500},
+    Suite: {qty: 2, price: 4000}
+};
+let nextId = 1;
+
+function checkRoom() {
+    if (new Date(out.value) <= new Date(document.getElementById("in").value)) {
+        availability.innerHTML = "Select a valid checkout date";
+        return;
+    }
+    availability.innerHTML = room.value + " room availability: " +
+        rooms[room.value].qty;
+}
+
+function bookRoom() {
+    let a = document.getElementById("arrival").value;
+    let d = document.getElementById("departure").value;
+    if (new Date(d) <= new Date(a)) {
+        booking.innerHTML = "Invalid dates";
+        return;
+    }
+    let b = {id: nextId++, name: name.value, type: type.value,
+             arrival: a, departure: d, status: "Booked"};
+    bookings.push(b);
+    booking.innerHTML = "Booking Successful! ID: " + b.id;
+}
+
+function showHistory() {
+    history.innerHTML = bookings.map(b =>
+        "ID: " + b.id + ", " + b.name + ", " + b.type +
+        ", " + b.arrival + " to " + b.departure +
+        ", " + b.status).join("<br>");
+}
+
+function modifyBooking() {
+    let b = bookings.find(x => x.id == modifyId.value);
+    if (!b) return alert("Booking not found");
+    let limit = new Date(b.arrival);
+    limit.setDate(limit.getDate() - 3);
+    if (new Date() > limit) return alert("Changes allowed only 3 days before arrival");
+    if (new Date(newDate.value) <= new Date()) return alert("Invalid date");
+    b.arrival = newDate.value;
+    alert("Booking Updated");
+}
+
+function cancelBooking() {
+    let b = bookings.find(x => x.id == cancelId.value);
+    if (!b) return alert("Booking not found");
+    let limit = new Date(b.arrival);
+    limit.setDate(limit.getDate() - 3);
+    if (new Date() > limit) return alert("Cancellation allowed only 3 days before arrival");
+    b.status = "Cancelled";
+    alert("Booking Cancelled");
+}
+
+function updateRoom() {
+    rooms[adminRoom.value].qty = Number(quantity.value);
+    rooms[adminRoom.value].price = Number(price.value);
+    roomDetails.innerHTML = "Room details updated successfully";
+}
+
+function adminCancel() {
+    let b = bookings.find(x => x.id == adminId.value);
+    if (!b) return alert("Booking not found");
+    b.status = "Cancelled by Admin";
+    alert("Booking Cancelled");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bus Ticket Booking</title>
+</head>
+<body>
+
+<h1>Online Bus Ticket Booking System</h1>
+
+<h2>1. Login</h2>
+<form onsubmit="alert('Login Successful');return false;">
+    Email: <input type="email" required><br><br>
+    Password: <input type="password" required><br><br>
+    <input type="submit" value="Login">
+    <button type="button" onclick="alert('Password reset link requested')">
+        Forgot Password
+    </button>
+</form>
+
+<h2>2. Registration</h2>
+<form onsubmit="alert('Registration Successful');return false;">
+    Name: <input required><br><br>
+    Email: <input type="email" required><br><br>
+    Password: <input type="password" required><br><br>
+    <input type="submit" value="Register">
+</form>
+
+<h2>3. Search Bus</h2>
+<form onsubmit="searchBus();return false;">
+    From: <input id="from" required>
+    To: <input id="to" required><br><br>
+    Date: <input type="date" id="date" required><br><br>
+    <input type="submit" value="Search Bus">
+</form>
+<p id="searchResult"></p>
+
+<h2>4. Book Ticket</h2>
+<form onsubmit="bookTicket();return false;">
+    Passenger Name: <input id="passenger" required><br><br>
+    Bus Type:
+    <select id="busType">
+        <option>Volvo</option>
+        <option>Sleeper Coach</option>
+        <option>Normal Coach</option>
+    </select><br><br>
+    Seat Number: <input id="seat" type="number" min="1" required><br><br>
+    <input type="submit" value="Book Ticket">
+</form>
+<p id="bookingResult"></p>
+
+<h2>5. Booking History</h2>
+<button onclick="showHistory()">View History</button>
+<p id="history"></p>
+
+<h2>6. Cancel Ticket</h2>
+Booking ID: <input id="cancelId">
+<button onclick="cancelTicket()">Cancel Ticket</button>
+
+<h2>7. Comments</h2>
+<textarea id="comment" placeholder="Enter your comments"></textarea><br><br>
+<button onclick="addComment()">Submit Comment</button>
+<p id="comments"></p>
+
+<h2>8. Admin - Add / Update Bus</h2>
+Bus ID: <input id="busId"><br><br>
+Bus Name: <input id="busName"><br><br>
+Route: <input id="route"><br><br>
+Available Seats: <input id="seats" type="number"><br><br>
+Ticket Price: <input id="price" type="number"><br><br>
+<button onclick="addBus()">Save Bus</button>
+<p id="busResult"></p>
+
+<h2>9. Admin - Manage Users</h2>
+<button onclick="alert('User management selected')">Manage Users</button>
+
+<h2>10. Admin - Manage News</h2>
+<textarea id="news" placeholder="Enter latest news"></textarea><br><br>
+<button onclick="publishNews()">Publish News</button>
+<p id="newsResult"></p>
+
+<h2>11. Report Generation</h2>
+<button onclick="report()">Generate Report</button>
+<p id="reportResult"></p>
+
+<h2>12. Contact Us</h2>
+<p>Email: bus@example.com</p>
+<p>Phone: 9876543210</p>
+
+<script>
+let buses = [];
+let tickets = [];
+let comments = [];
+let nextId = 1;
+
+function searchBus() {
+    searchResult.innerHTML = "Searching buses from " +
+        from.value + " to " + to.value + " on " + date.value;
+}
+
+function addBus() {
+    let b = buses.find(x => x.id == busId.value);
+    if (b) {
+        b.name = busName.value;
+        b.route = route.value;
+        b.seats = Number(seats.value);
+        b.price = Number(price.value);
+    } else {
+        buses.push({id: busId.value, name: busName.value,
+            route: route.value, seats: Number(seats.value),
+            price: Number(price.value)});
+    }
+    busResult.innerHTML = "Bus Information Saved";
+}
+
+function bookTicket() {
+    let b = buses.find(x => x.seats > 0);
+    if (b) b.seats--;
+    let t = {id: nextId++, name: passenger.value,
+        type: busType.value, seat: seat.value, status: "Booked"};
+    tickets.push(t);
+    bookingResult.innerHTML = "Ticket Booked. Booking ID: " + t.id;
+}
+
+function showHistory() {
+    history.innerHTML = tickets.map(t =>
+        "ID: " + t.id + ", " + t.name + ", Seat: " +
+        t.seat + ", " + t.status).join("<br>");
+}
+
+function cancelTicket() {
+    let t = tickets.find(x => x.id == cancelId.value);
+    if (!t || t.status != "Booked") return alert("Ticket not found");
+    t.status = "Cancelled";
+    alert("Ticket Cancelled");
+}
+
+function addComment() {
+    comments.push(comment.value);
+    comments.innerHTML = comments.join("<br>");
+}
+
+function publishNews() {
+    newsResult.innerHTML = news.value;
+}
+
+function report() {
+    reportResult.innerHTML = "Total Buses: " + buses.length +
+        " | Total Bookings: " + tickets.length;
+}
+</script>
+
+</body>
+</html>

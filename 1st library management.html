@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Management System</title>
+</head>
+<body>
+
+<h1>Library Management System</h1>
+
+<h2>1. Login</h2>
+<form onsubmit="alert('Login Successful'); return false;">
+    User ID: <input id="uid" required><br><br>
+    Password: <input type="password" required><br><br>
+    <input type="submit" value="Login">
+</form>
+
+<h2>2. Register</h2>
+<form onsubmit="alert('Registered Successfully'); return false;">
+    Name: <input required><br><br>
+    Register No: <input required><br><br>
+    Email: <input type="email" required><br><br>
+    Password: <input type="password" required><br><br>
+    <input type="submit" value="Register">
+</form>
+
+<h2>3. Add Book (Admin)</h2>
+<form onsubmit="addBook(); return false;">
+    Book ID: <input id="bid" required><br><br>
+    Title: <input id="title" required><br><br>
+    Author: <input id="author" required><br><br>
+    <input type="submit" value="Add Book">
+</form>
+<p id="books"></p>
+
+<h2>4. Search Book</h2>
+<input id="search" placeholder="Enter book title">
+<button onclick="searchBook()">Search</button>
+<p id="result"></p>
+
+<h2>5. Borrow History</h2>
+<p>Book: Java | Issue Date: 10-10-2026 |
+Expiry Date: 17-10-2026</p>
+
+<h2>6. Return Book</h2>
+Book ID: <input id="returnId">
+<button onclick="alert('Book Returned')">Return</button>
+
+<h2>7. Fine Details</h2>
+Register No: <input>
+Fine Amount: <input type="number">
+<button onclick="alert('Fine Updated')">Submit Fine</button>
+
+<h2>8. Study Material</h2>
+Year:
+<select id="year">
+    <option>1</option><option>2</option>
+    <option>3</option><option>4</option>
+</select>
+Semester:
+<select id="sem">
+    <option>1</option><option>2</option>
+    <option>3</option><option>4</option>
+    <option>5</option><option>6</option>
+    <option>7</option><option>8</option>
+</select>
+<p><a href="#" download>Download Material</a></p>
+
+<h2>9. My Profile</h2>
+Name: <input id="pname">
+Email: <input id="email" type="email">
+<button onclick="alert('Profile Updated')">Update Profile</button>
+
+<h2>10. Contact Us</h2>
+Name: <input><br><br>
+Message: <textarea></textarea><br><br>
+<button onclick="alert('Message Sent')">Send</button>
+
+<script>
+let bookList = [];
+
+function addBook() {
+    bookList.push({
+        id: bid.value,
+        title: title.value,
+        author: author.value
+    });
+    books.innerHTML = "Book Added Successfully";
+}
+
+function searchBook() {
+    let b = bookList.find(x =>
+        x.title.toLowerCase() === search.value.toLowerCase()
+    );
+    result.innerHTML = b ?
+        b.title + " - " + b.author : "Book Not Found";
+}
+</script>
+
+</body>
+</html>
