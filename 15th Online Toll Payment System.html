@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>EasyToll</title>
+<style>
+body{font-family:Arial;text-align:center;background:#eaf4ff;padding:20px}
+.box{background:white;padding:25px;max-width:450px;margin:auto}
+input,select,button{padding:10px;margin:8px;width:80%}
+button{background:#0056b3;color:white;border:0}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>EasyToll Payment</h2>
+<input id="name" placeholder="User Name"><br>
+<input id="vehicle" placeholder="Vehicle Number"><br>
+<select id="pass">
+<option>Single Toll Ticket</option>
+<option>Monthly Toll Pass</option>
+</select><br>
+<input id="amount" type="number" placeholder="Toll Amount"><br>
+<button onclick="payToll()">Pay Toll</button>
+<p id="result"></p>
+</div>
+<script>
+function payToll(){
+let n=document.getElementById("name").value;
+let v=document.getElementById("vehicle").value;
+let p=document.getElementById("pass").value;
+let a=Number(document.getElementById("amount").value);
+if(!n||!v||a<=0){alert("Enter valid details");return;}
+document.getElementById("result").innerHTML=
+"Demo Payment Successful!<br>User: "+n+
+"<br>Vehicle: "+v+"<br>Pass: "+p+"<br>Amount: Rs."+a;
+}
+</script>
+</body>
+</html>

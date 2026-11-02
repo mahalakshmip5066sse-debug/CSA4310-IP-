@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>ReNewMarket</title>
+<style>
+body{font-family:Arial;text-align:center;background:#f0fff0;padding:20px}
+.box{background:white;padding:25px;max-width:500px;margin:auto}
+input,button{padding:10px;margin:6px}
+button{background:#238636;color:white;border:0}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>ReNewMarket</h2>
+<input id="search" placeholder="Search used products">
+<button onclick="searchItems()">Search</button>
+<div id="products"></div>
+<input id="name" placeholder="Customer Name">
+<p id="selected">No product selected</p>
+<button onclick="buy()">Buy Product</button>
+<p id="result"></p>
+</div>
+<script>
+let items=[
+{name:"Mobile",price:5000},
+{name:"Chair",price:800},
+{name:"Shirt",price:300}
+];
+let selected=null;
+function searchItems(){
+let s=document.getElementById("search").value.toLowerCase();
+let found=items.filter(x=>x.name.toLowerCase().includes(s));
+document.getElementById("products").innerHTML=found.map(x=>
+`${x.name} - Rs.${x.price}
+<button onclick="choose('${x.name}')">Select</button>`
+).join("<br>")||"No products found";
+}
+function choose(name){
+selected=items.find(x=>x.name===name);
+document.getElementById("selected").innerText=
+"Selected: "+selected.name+" - Rs."+selected.price;
+}
+function buy(){
+let n=document.getElementById("name").value;
+if(!n||!selected){alert("Enter name and select a product");return;}
+document.getElementById("result").innerText=
+"Purchase Confirmed for "+n+"! Product: "+selected.name+
+", Price: Rs."+selected.price;
+}
+searchItems();
+</script>
+</body>
+</html>
