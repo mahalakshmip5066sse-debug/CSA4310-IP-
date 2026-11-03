@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>StyleHub</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eee}
+h1{background:purple;color:white;padding:12px}
+.box,.card{background:white;padding:10px;margin:8px}
+.card{display:inline-block}
+button{background:purple;color:white;padding:7px;margin:4px}
+</style>
+</head>
+<body>
+
+<h1>StyleHub Shopping</h1>
+
+<div class="box">
+<h3>Login / Register</h3>
+<input id="u" placeholder="Username">
+<input id="p" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button onclick="alert('Registered Successfully')">Register</button>
+</div>
+
+<div class="box">
+<h3>Categories</h3>
+<select id="cat" onchange="show()">
+<option>All</option>
+<option>Men</option>
+<option>Women</option>
+<option>Children</option>
+</select>
+<input id="s" placeholder="Search" onkeyup="show()">
+</div>
+
+<div id="products"></div>
+
+<div class="box">
+<h3>Product Details</h3>
+<p id="details">Select Product</p>
+<h3>Shopping Cart</h3>
+<p id="cart">Cart Empty</p>
+<p id="total">Total: ₹0</p>
+<button onclick="removeItem()">Remove</button>
+<button onclick="checkout()">Checkout</button>
+</div>
+
+<div class="box">
+<h3>Order History / Status</h3>
+<p id="orders">No Orders</p>
+</div>
+
+<div class="box">
+<h3>Admin Panel</h3>
+<input id="name" placeholder="Product Name">
+<input id="price" placeholder="Price">
+<button onclick="addProduct()">Add Product</button>
+<button onclick="deleteProduct()">Delete Product</button>
+</div>
+
+<div class="box">
+<button onclick="logout()">Logout</button>
+</div>
+
+<script>
+let data=[["Shirt","Men",500],["Dress","Women",1000],["Shoes","Children",700]];
+let items=[],history=[];
+
+function login(){
+if(u.value&&p.value)alert("Welcome "+u.value);
+else alert("Enter Username and Password");
+}
+
+function show(){
+products.innerHTML="";
+data.forEach((x,i)=>{
+if((cat.value=="All"||cat.value==x[1])&&x[0].toLowerCase().includes(s.value.toLowerCase()))
+products.innerHTML+=`<div class="card"><h3>${x[0]}</h3>₹${x[2]}<br>
+<button onclick="details.innerHTML='${x[0]} ₹${x[2]}'">View</button>
+<button onclick="addCart(${i})">Add to Cart</button></div>`;
+});
+}
+
+function addCart(i){
+items.push(data[i]);
+showCart();
+alert("Product Added");
+}
+
+function showCart(){
+cart.innerHTML=items.map(x=>x[0]+" ₹"+x[2]).join("<br>")||"Cart Empty";
+total.innerHTML="Total: ₹"+items.reduce((a,x)=>a+x[2],0);
+}
+
+function removeItem(){
+if(items.length)items.pop();
+showCart();
+}
+
+function checkout(){
+if(!items.length)return alert("Cart Empty");
+history.push(items.map(x=>x[0]).join(", "));
+orders.innerHTML=history.join("<br>");
+items=[];showCart();
+alert("Order Placed Successfully");
+}
+
+function addProduct(){
+if(name.value&&price.value){
+data.push([name.value,cat.value,+price.value]);
+show();alert("Product Added");
+}else alert("Enter Product Details");
+}
+
+function deleteProduct(){
+data.pop();show();alert("Product Deleted");
+}
+
+function logout(){
+u.value="";p.value="";
+alert("Logged Out");
+}
+
+show();
+</script>
+</body>
+</html>

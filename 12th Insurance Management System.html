@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>InsureEasy</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eee}
+h1{background:navy;color:white;padding:12px}
+.box{background:white;padding:12px;margin:10px}
+button{background:navy;color:white;padding:7px;margin:4px}
+</style>
+</head>
+<body>
+
+<h1>InsureEasy Insurance System</h1>
+
+<div class="box">
+<h3>Login</h3>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button onclick="alert('Registered Successfully')">Register</button>
+</div>
+
+<div class="box">
+<h3>Admin Panel</h3>
+<button onclick="alert('Agent Login Approved')">Approve Agent</button>
+<button onclick="alert('Agent Details Viewed')">View Agents</button>
+</div>
+
+<div class="box">
+<h3>Agent Panel</h3>
+<input id="cname" placeholder="Customer Name">
+<button onclick="addCustomer()">Create Customer</button>
+<p id="customer"></p>
+<input id="policy" placeholder="Policy Name">
+<button onclick="addPolicy()">Add Policy</button>
+<p id="policies"></p>
+<button onclick="alert('SMS Reminder Sent')">Send SMS Alert</button>
+</div>
+
+<div class="box">
+<h3>User Panel</h3>
+<button onclick="viewPolicy()">View Policy</button>
+<button onclick="alert('Premium Paid Successfully')">Pay Premium</button>
+<button onclick="alert('Claim Submitted')">File Claim</button>
+<p id="result"></p>
+</div>
+
+<script>
+let customers=[],policies=[];
+
+function login(){
+alert(user.value&&pass.value?"Login Successful":"Enter Login Details");
+}
+
+function addCustomer(){
+if(cname.value){
+customers.push(cname.value);
+customer.innerHTML=customers.join("<br>");
+}
+}
+
+function addPolicy(){
+if(policy.value){
+policies.push(policy.value);
+policies.innerHTML=policies.join("<br>");
+}
+}
+
+function viewPolicy(){
+result.innerHTML=policies.join("<br>")||"No Policies";
+}
+</script>
+</body>
+</html>

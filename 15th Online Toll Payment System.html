@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EasyToll</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eee}
+h1{background:navy;color:white;padding:12px}
+.box{background:white;padding:12px;margin:12px}
+button{background:navy;color:white;padding:7px;margin:5px}
+</style>
+</head>
+<body>
+
+<h1>EasyToll Payment System</h1>
+
+<div class="box">
+<h3>User Login / Register</h3>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button onclick="alert('Registered Successfully')">Register</button>
+</div>
+
+<div class="box">
+<h3>Vehicle Details</h3>
+<input id="vehicle" placeholder="Vehicle Number">
+<button onclick="alert('Vehicle Details Saved')">Save Vehicle</button>
+</div>
+
+<div class="box">
+<h3>eWallet</h3>
+<p>Balance: ₹<span id="bal">500</span></p>
+<button onclick="addMoney()">Add ₹500</button>
+</div>
+
+<div class="box">
+<h3>Toll Payment</h3>
+<select id="toll">
+<option>Chennai Toll</option>
+<option>Bengaluru Toll</option>
+</select>
+<button onclick="pay()">Pay ₹100</button>
+</div>
+
+<div class="box">
+<h3>Toll Pass</h3>
+<button onclick="pass()">Apply / Renew Pass</button>
+<p id="passmsg"></p>
+</div>
+
+<div class="box">
+<h3>Transaction History</h3>
+<p id="history">No Transactions</p>
+</div>
+
+<div class="box">
+<h3>Toll Gate Verification</h3>
+<input id="ticket" placeholder="Enter Ticket ID">
+<button onclick="verify()">Verify Ticket</button>
+<p id="verifymsg"></p>
+</div>
+
+<div class="box">
+<h3>Admin</h3>
+<button onclick="alert('Toll Details Updated')">Manage Toll Details</button>
+<button onclick="alert('Pass Approved')">Approve Pass</button>
+</div>
+
+<button onclick="alert('Logged Out')">Logout</button>
+
+<script>
+let balance=500,transactions=[],ticketNo=1001;
+
+function login(){
+alert(user.value&&pass.value?"Login Successful":"Enter Login Details");
+}
+
+function addMoney(){
+balance+=500;
+bal.innerHTML=balance;
+}
+
+function pay(){
+if(balance>=100){
+balance-=100;
+bal.innerHTML=balance;
+transactions.push("Toll Payment: ₹100");
+history.innerHTML=transactions.join("<br>");
+alert("Payment Successful. Ticket ID: "+ticketNo++);
+}else{
+alert("Insufficient Balance");
+}
+}
+
+function pass(){
+if(balance>=200){
+balance-=200;
+bal.innerHTML=balance;
+passmsg.innerHTML="Toll Pass Applied Successfully";
+transactions.push("Toll Pass: ₹200");
+history.innerHTML=transactions.join("<br>");
+}else{
+alert("Insufficient Balance");
+}
+}
+
+function verify(){
+verifymsg.innerHTML=ticket.value?"Ticket Verified":"Enter Ticket ID";
+}
+</script>
+
+</body>
+</html>

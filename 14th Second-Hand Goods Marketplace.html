@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>ReNewMarket</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eee}
+h1{background:green;color:white;padding:12px}
+.box,.card{background:white;padding:10px;margin:10px}
+.card{display:inline-block}
+button{background:green;color:white;padding:7px;margin:4px}
+</style>
+</head>
+<body>
+
+<h1>ReNewMarket</h1>
+
+<div class="box">
+<h3>User Login</h3>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button onclick="alert('Registered Successfully')">Register</button>
+</div>
+
+<div class="box">
+<h3>Categories</h3>
+<select id="cat" onchange="show()">
+<option>All</option><option>Electronics</option>
+<option>Furniture</option><option>Clothing</option>
+</select>
+<input id="s" placeholder="Search" onkeyup="show()">
+</div>
+
+<div id="products"></div>
+
+<div class="box">
+<h3>Sell Used Product</h3>
+<input id="name" placeholder="Product Name">
+<input id="price" placeholder="Price">
+<button onclick="add()">Add Product</button>
+</div>
+
+<div class="box">
+<h3>Order Management</h3>
+<p id="orders">No Orders</p>
+<button onclick="alert('Order Shipped')">Ship Order</button>
+<button onclick="alert('Order Received')">Received</button>
+</div>
+
+<div class="box">
+<h3>Feedback</h3>
+<input id="review" placeholder="Enter Feedback">
+<button onclick="send()">Submit</button>
+<p id="result"></p>
+</div>
+
+<button onclick="logout()">Logout</button>
+
+<script>
+let data=[["Mobile","Electronics",5000],["Chair","Furniture",1000],["Shirt","Clothing",300]],orders=[];
+
+function login(){
+alert(user.value&&pass.value?"Login Successful":"Enter Login Details");
+}
+
+function show(){
+products.innerHTML="";
+data.forEach((x,i)=>{
+if((cat.value=="All"||cat.value==x[1])&&x[0].toLowerCase().includes(s.value.toLowerCase()))
+products.innerHTML+=`<div class="card"><h3>${x[0]}</h3>₹${x[2]}<br><button onclick="orders.push('${x[0]}');document.getElementById('orders').innerHTML=orders.join('<br>')">Buy</button></div>`;
+});
+}
+
+function add(){
+if(name.value&&price.value){
+data.push([name.value,cat.value,+price.value]);show();
+}
+}
+
+function send(){result.innerHTML="Thank You for Feedback: "+review.value}
+function logout(){alert("Logged Out")}
+show();
+</script>
+</body>
+</html>

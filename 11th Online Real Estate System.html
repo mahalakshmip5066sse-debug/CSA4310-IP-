@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home Finder</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eee}
+h1{background:navy;color:white;padding:12px}
+.box,.card{background:white;padding:12px;margin:10px}
+.card{display:inline-block}
+button{background:navy;color:white;padding:7px;margin:4px}
+</style>
+</head>
+<body>
+
+<h1>Home Finder</h1>
+
+<div class="box">
+<h3>Buyer Login</h3>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<div class="box">
+<h3>Search Properties</h3>
+<input id="loc" placeholder="Location">
+<input id="budget" placeholder="Max Budget">
+<select id="type">
+<option>All</option><option>House</option><option>Land</option>
+</select>
+<button onclick="search()">Search</button>
+<button onclick="save()">Save Search</button>
+<p id="saved"></p>
+</div>
+
+<div id="result"></div>
+
+<div class="box">
+<h3>Agent Search</h3>
+<input id="agent" placeholder="Agent Name">
+<button onclick="findAgent()">Search Agent</button>
+<p id="agentResult"></p>
+</div>
+
+<div class="box">
+<h3>Advertisements</h3>
+<a href="https://www.magicbricks.com">Visit MagicBricks</a>
+</div>
+
+<p id="visits">Visitors: 0</p>
+
+<script>
+let data=[
+["House","Chennai",5000000],
+["Land","Bangalore",2000000],
+["House","Salem",3000000]],count=0;
+
+function login(){
+alert(user.value&&pass.value?"Login Successful":"Enter Login Details");
+}
+
+function search(){
+result.innerHTML="";
+let found=data.filter(x=>(!loc.value||x[1].toLowerCase().includes(loc.value.toLowerCase()))&&
+(!budget.value||x[2]<=Number(budget.value))&&(type.value=="All"||type.value==x[0]));
+found.forEach(x=>{
+result.innerHTML+=`<div class="card"><h3>${x[0]}</h3>${x[1]}<br>₹${x[2]}<br>
+<button onclick="alert('${x[0]} in ${x[1]}')">Details</button>
+<button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${x[1]}')">Map</button></div>`;
+});
+count++;visits.innerHTML="Visitors: "+count;
+}
+
+function save(){
+saved.innerHTML="Saved: "+loc.value+" - ₹"+budget.value;
+}
+
+function findAgent(){
+agentResult.innerHTML=agent.value?"Agent: "+agent.value+"<br>Contact: 9876543210":"Enter Agent Name";
+}
+search();
+</script>
+</body>
+</html>

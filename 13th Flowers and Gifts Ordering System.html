@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>BlossomGifts</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eee}
+h1{background:purple;color:white;padding:12px}
+.box,.card{background:white;padding:12px;margin:10px}
+.card{display:inline-block}
+button{background:purple;color:white;padding:7px;margin:4px}
+</style>
+</head>
+<body>
+
+<h1>BlossomGifts</h1>
+
+<div class="box">
+<h3>Login / Register</h3>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button onclick="alert('Registered Successfully')">Register</button>
+</div>
+
+<div class="box">
+<h3>Gift Categories</h3>
+<select id="cat" onchange="show()">
+<option>All</option><option>Flowers</option>
+<option>Gifts</option><option>Cakes</option>
+</select>
+</div>
+
+<div id="products"></div>
+
+<div class="box">
+<h3>Order Details</h3>
+<input id="date" type="date">
+<input id="time" type="time">
+<p id="cart">Cart Empty</p>
+<p id="total">Total: ₹0</p>
+<button onclick="removeItem()">Remove</button>
+<button onclick="checkout()">Order Now</button>
+</div>
+
+<div class="box">
+<h3>Order Tracking</h3>
+<p id="status">No Orders</p>
+<button onclick="alert('Order Confirmed')">Check Status</button>
+</div>
+
+<div class="box">
+<button onclick="alert('Special Offers Available')">Offers</button>
+<button onclick="alert('Logged Out')">Logout</button>
+</div>
+
+<script>
+let data=[["Flowers","Flowers",500],["Gift Box","Gifts",800],["Cake","Cakes",600]],items=[];
+
+function login(){
+alert(user.value&&pass.value?"Login Successful":"Enter Login Details");
+}
+
+function show(){
+products.innerHTML="";
+data.forEach((x,i)=>{
+if(cat.value=="All"||cat.value==x[1])
+products.innerHTML+=`<div class="card"><h3>${x[0]}</h3>₹${x[2]}<br><button onclick="items.push(data[${i}]);showCart()">Add</button></div>`;
+});
+}
+
+function showCart(){
+cart.innerHTML=items.map(x=>x[0]).join("<br>")||"Cart Empty";
+total.innerHTML="Total: ₹"+items.reduce((a,x)=>a+x[2],0);
+}
+
+function removeItem(){items.pop();showCart()}
+
+function checkout(){
+if(!items.length)return alert("Cart Empty");
+status.innerHTML="Order Confirmed - "+items.map(x=>x[0]).join(", ");
+items=[];showCart();alert("Order Placed Successfully");
+}
+show();
+</script>
+</body>
+</html>
