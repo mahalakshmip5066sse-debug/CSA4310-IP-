@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>Cake Ordering</title></head>
+<body>
+
+    <h1>Online Cake Ordering System</h1>
+
+    <h3>1. Register / Login</h3>
+    <input id="u" placeholder="Username">
+    <input id="p" placeholder="Password">
+    <button onclick="alert('Login Successful')">Login</button>
+    <button onclick="alert('Registered Successfully')">Register</button>
+
+    <h3>2. Search and Filter Cakes</h3>
+    <input id="s" placeholder="Search Cake">
+    <select id="cat">
+    <option>All</option><option>Birthday</option>
+    <option>Chocolate</option><option>Wedding</option>
+    </select>
+    <button onclick="show()">Search</button>
+    <div id="cakes"></div>
+
+    <h3>3. Cake Description</h3>
+    <p id="desc">Select a cake</p>
+
+    <h3>4. Shopping Cart</h3>
+    <p id="cart">Cart Empty</p>
+    <button onclick="alert('Order Placed')">Place Order</button>
+
+    <h3>5. Shipping Address</h3>
+    <input id="addr" placeholder="Enter Address">
+    <button onclick="alert('Address Saved')">Save Address</button>
+
+    <h3>6. Order / Shipping Status</h3>
+    <p id="status">No Orders</p>
+    <button onclick="status.innerHTML='Order Placed'">Track Order</button>
+
+    <script>
+    let names=["Chocolate Cake","Birthday Cake","Wedding Cake"];
+    function show(){
+    cakes.innerHTML="";
+    names.filter(n=>n.toLowerCase().includes(s.value.toLowerCase())&&(cat.value=="All"||n.includes(cat.value))).forEach(n=>cakes.innerHTML+=n+" <button onclick=\"desc.innerHTML='"+n+"';cart.innerHTML='"+n+" Added'\">View / Add</button><br>");
+    }
+    show();
+    </script>
+
+</body>
+</html>

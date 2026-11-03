@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head><title>Bus Booking</title></head>
+<body>
+    <h1>Bus Ticket Booking System</h1>
+    <h2>1. Login</h2>
+        <input placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button onclick="alert('Login Success')">Login</button>
+    <h2>2. Registration</h2>
+        <input placeholder="Name">
+        <input placeholder="Email">
+        <button onclick="alert('Registered')">Register</button>
+    <h2>3. Search Bus</h2>
+        <input id="from" placeholder="From">
+        <input id="to" placeholder="To">
+        <button onclick="searchBus()">Search</button>
+        <p id="result"></p>
+    <h2>4. Book Ticket</h2>
+        <input id="name" placeholder="Passenger Name">
+        <input id="seat" placeholder="Seat No">
+        <button onclick="book()">Book</button>
+        <p id="booking"></p>
+    <h2>5. Booking History</h2>
+        <button onclick="show()">View History</button>
+        <p id="history"></p>
+    <h2>6. Cancel Ticket</h2>
+        <button onclick="cancel()">Cancel</button>
+    <h2>7. Comments</h2>
+        <textarea id="comment"></textarea>
+        <button onclick="comments.innerHTML=comment.value">Submit</button>
+        <p id="comments"></p>
+    <h2>8. Admin - Add Bus</h2>
+        <input id="bus" placeholder="Bus Name">
+        <button onclick="alert('Bus Added')">Save</button>
+    <h2>9. Manage Users</h2>
+        <button onclick="alert('Users Managed')">Manage</button>
+    <h2>10. Manage News</h2>
+        <textarea id="news"></textarea>
+        <button onclick="newsResult.innerHTML=news.value">Publish</button>
+        <p id="newsResult"></p>
+    <h2>11. Report</h2>
+        <button onclick="report.innerHTML='Total Bookings: '+tickets.length">Generate</button>
+        <p id="report"></p>
+    <h2>12. Contact Us</h2>
+        <p>Email: bus@gmail.com | Phone: 9876543210</p>
+
+    <script>
+    let tickets = [];
+
+    function searchBus() {
+        result.innerHTML = from.value + " to " + to.value;
+    }
+
+    function book() {
+        tickets.push(name.value + " - " + seat.value);
+        booking.innerHTML = "Ticket Booked";
+    }
+
+    function show() {
+        history.innerHTML = tickets.join("<br>");
+    }
+
+    function cancel() {
+        tickets.pop();
+        alert("Ticket Cancelled");
+    }
+    </script>
+
+</body>
+</html>

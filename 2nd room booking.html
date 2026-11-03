@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hotel Booking</title>
+</head>
+<body>
+    <h1>Hotel Room Booking System</h1>
+    <h2>1. Registration</h2>
+        <form onsubmit="alert('Registered');return false">
+        Name: <input required>
+        Email: <input type="email" required>
+        Password: <input type="password" required>
+        <input type="submit" value="Register">
+        </form>
+    <h2>2. Login</h2>
+        <form onsubmit="alert('Login Successful');return false">
+        Email: <input type="email" required>
+        Password: <input type="password" required>
+        <input type="submit" value="Login">
+        </form>
+    <h2>3. Check Availability</h2>
+        <select id="room">
+            <option>Single</option>
+            <option>Double</option>
+            <option>Deluxe</option>
+        </select>
+        <input type="date" id="in">
+        <input type="date" id="out">
+        <button onclick="checkRoom()">Check</button>
+        <p id="availability"></p>
+    <h2>4. Book Room</h2>
+        Name: <input id="name">
+        <select id="type">
+            <option>Single</option>
+            <option>Double</option>
+            <option>Deluxe</option>
+        </select>
+        <input type="date" id="date">
+        <button onclick="bookRoom()">Book</button>
+        <p id="booking"></p>
+    <h2>5. Booking History</h2>
+        <button onclick="history()">View History</button>
+        <p id="details"></p>
+    <h2>6. Modify Booking</h2>
+        <input placeholder="Booking ID">
+        <input type="date">
+        <button onclick="modifyBooking()">Modify</button>
+    <h2>7. Cancel Booking</h2>
+        <button onclick="cancelBooking()">Cancel</button>
+    <h2>8. My Profile</h2>
+        <input placeholder="Name">
+        <input placeholder="Email">
+        <button onclick="alert('Profile Updated')">Update</button>
+    <h2>9. Admin - Manage Rooms</h2>
+        <input type="number" placeholder="Quantity">
+        <input type="number" placeholder="Price">
+        <button onclick="alert('Room Updated')">Update</button>
+    <h2>10. Admin - Manage Booking</h2>
+        <input placeholder="Booking ID">
+        <button onclick="cancelBooking()">Cancel Booking</button>
+
+    <script>
+    let bookings = [];
+    let id = 1;
+
+    function checkRoom() {
+        availability.innerHTML = "Rooms Available";
+    }
+
+    function bookRoom() {
+        bookings.push(name.value + " - " + type.value);
+        booking.innerHTML = "Booking ID: " + id++;
+    }
+
+    function history() {
+        details.innerHTML = bookings.join("<br>");
+    }
+
+    function modifyBooking() {
+        alert("Booking Modified");
+    }
+
+    function cancelBooking() {
+        bookings.pop();
+        alert("Booking Cancelled");
+    }
+    </script>
+
+</body>
+</html>

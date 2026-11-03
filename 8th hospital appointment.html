@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>MedCare Hospital</title>
+    <style>
+    body{font-family:Arial;background:#eef7fa;text-align:center}
+    h1{background:teal;color:white;padding:10px}
+    section{background:white;margin:15px;padding:10px}
+    input,select,button,textarea{padding:8px;margin:5px}
+    button{background:teal;color:white;border:0}
+    </style>
+</head>
+<body>
+
+    <h1>MedCare Hospital Appointment System</h1>
+
+    <section>
+    <h3>1. Patient Registration / Login</h3>
+    <input placeholder="Patient Name">
+    <input placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button onclick="alert('Login Successful')">Register / Login</button>
+    </section>
+
+    <section>
+    <h3>2. Search Hospital / Doctor</h3>
+    <input id="location" placeholder="Location">
+    <select id="specialty">
+    <option>General</option><option>Cardiology</option>
+    <option>Dermatology</option><option>Neurology</option>
+    <option>Pediatrics</option>
+    </select>
+    <button onclick="searchDoctor()">Search</button>
+    <p id="result"></p>
+    </section>
+
+    <section>
+    <h3>3. Book Appointment</h3>
+    <input id="patient" placeholder="Patient Name">
+    <input id="doctor" placeholder="Doctor Name">
+    <input id="date" type="date">
+    <input id="time" type="time">
+    <button onclick="book()">Book Appointment</button>
+    <p id="booking"></p>
+    </section>
+
+    <section>
+    <h3>4. Check-in Form</h3>
+    <input id="checkid" placeholder="Appointment ID">
+    <button onclick="checkin()">Check In</button>
+    </section>
+
+    <section>
+    <h3>5. Appointment Management</h3>
+    <input id="manageid" placeholder="Appointment ID">
+    <button onclick="cancel()">Cancel Appointment</button>
+    <button onclick="view()">View Appointments</button>
+    <p id="list"></p>
+    </section>
+
+    <section>
+    <h3>6. Past Appointments</h3>
+    <button onclick="past()">View Past Appointments</button>
+    <p id="pastlist"></p>
+    </section>
+
+    <section>
+    <h3>7. Doctor Reviews and Ratings</h3>
+    <input id="reviewDoctor" placeholder="Doctor Name">
+    <select id="rating"><option>5</option><option>4</option><option>3</option></select>
+    <textarea id="review" placeholder="Write Review"></textarea>
+    <button onclick="addReview()">Submit Review</button>
+    <p id="reviews"></p>
+    </section>
+
+    <section>
+    <h3>8. Admin - Manage Doctors</h3>
+    <input id="doctorName" placeholder="Doctor Name">
+    <input id="doctorSpecialty" placeholder="Specialty">
+    <input id="doctorLocation" placeholder="Location">
+    <button onclick="addDoctor()">Add Doctor</button>
+    <p id="doctors"></p>
+    </section>
+
+    <section>
+    <h3>9. Admin - Appointment Statistics</h3>
+    <button onclick="report()">View Statistics</button>
+    <p id="stats"></p>
+    </section>
+
+    <section>
+    <h3>10. Hospital Registration / Details</h3>
+    <input id="hospitalName" placeholder="Hospital Name">
+    <input id="hospitalLocation" placeholder="Location">
+    <input id="phone" placeholder="Phone">
+    <button onclick="saveHospital()">Save Details</button>
+    <p id="hospital"></p>
+    </section>
+
+    <section>
+    <h3>11. View Hospital on Map</h3>
+    <input id="map" placeholder="Hospital Location">
+    <button onclick="window.open('https://www.google.com/maps/search/'+map.value)">View Map</button>
+    </section>
+
+    <script>
+    let appointments=[],doctors=[],id=1;
+    function searchDoctor(){result.innerHTML=doctors.filter(d=>d.specialty==specialty.value&&d.location.includes(location.value)).map(d=>d.name).join("<br>")||"No Doctor Found";}
+    function book(){appointments.push({id:id++,patient:patient.value,doctor:doctor.value,date:date.value,status:"Booked"});booking.innerHTML="Appointment ID: "+(id-1);}
+    function checkin(){let a=appointments.find(x=>x.id==checkid.value);if(a)a.status="Checked In";alert(a?"Check-in Success":"Not Found");}
+    function cancel(){let a=appointments.find(x=>x.id==manageid.value);if(a)a.status="Cancelled";alert(a?"Cancelled":"Not Found");}
+    function view(){list.innerHTML=appointments.map(a=>a.id+" - "+a.patient+" - "+a.status).join("<br>");}
+    function past(){pastlist.innerHTML=appointments.filter(a=>a.date<new Date().toISOString().slice(0,10)).map(a=>a.patient).join("<br>")||"No Past Appointments";}
+    function addReview(){reviews.innerHTML=reviewDoctor.value+" - "+rating.value+"/5 - "+review.value;}
+    function addDoctor(){doctors.push({name:doctorName.value,specialty:doctorSpecialty.value,location:doctorLocation.value});doctors.innerHTML=doctors.map(d=>d.name).join("<br>");alert("Doctor Added");}
+    function report(){stats.innerHTML="Total: "+appointments.length+" | Cancelled: "+appointments.filter(a=>a.status=="Cancelled").length;}
+    function saveHospital(){hospital.innerHTML=hospitalName.value+" - "+hospitalLocation.value+" - "+phone.value;}
+    </script>
+
+</body>
+</html>

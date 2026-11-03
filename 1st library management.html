@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Library Management</title>
+</head>
+<body>
+    <h1>Library Management System</h1>
+    <h2>1. Login</h2>
+        <form onsubmit="alert('Login Successful');return false">
+        User ID: <input required>
+        Password: <input type="password" required>
+        <input type="submit" value="Login">
+        </form>
+    <h2>2. Register</h2>
+        <form onsubmit="alert('Registered');return false">
+        Name: <input required>
+        Email: <input type="email" required>
+        Password: <input type="password" required>
+        <input type="submit" value="Register">
+        </form>
+    <h2>3. Add Book</h2>
+        Book ID: <input id="id">
+        Title: <input id="title">
+        <button onclick="addBook()">Add</button>
+        <p id="books"></p>
+    <h2>4. Search Book</h2>
+        <input id="search" placeholder="Book Name">
+        <button onclick="searchBook()">Search</button>
+        <p id="result"></p>
+    <h2>5. Borrow History</h2>
+        <p>Book: Java | Date: 10-10-2026</p>
+    <h2>6. Return Book</h2>
+        <input placeholder="Book ID">
+        <button onclick="alert('Book Returned')">Return</button>
+    <h2>7. Fine Details</h2>
+        <input type="number" placeholder="Fine Amount">
+        <button onclick="alert('Fine Updated')">Submit</button>
+    <h2>8. Study Material</h2>
+        <select>
+            <option>Year 1</option>
+            <option>Year 2</option>
+            <option>Year 3</option>
+            <option>Year 4</option>
+        </select>
+    <h2>9. My Profile</h2>
+        <input placeholder="Name">
+        <input placeholder="Email">
+        <button onclick="alert('Profile Updated')">Update</button>
+    <h2>10. Contact Us</h2>
+        <input placeholder="Name">
+        <textarea placeholder="Message"></textarea>
+        <button onclick="alert('Message Sent')">Send</button>
+
+    <script>
+    let book = "";
+
+    function addBook() {
+        book = title.value;
+        books.innerHTML = "Book Added";
+    }
+
+    function searchBook() {
+        result.innerHTML = (search.value == book) ?
+        "Book Found" : "Book Not Found";
+    }
+    </script>
+
+</body>
+</html>

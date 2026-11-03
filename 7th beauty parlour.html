@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>Beauty Parlour Booking</title></head>
+<body>
+
+    <h1>Beauty Parlour Appointment Booking</h1>
+
+    <h3>1. Register / Login</h3>
+    <input id="u" placeholder="Username">
+    <input id="p" placeholder="Password">
+    <button onclick="alert('Registered')">Register</button>
+    <button onclick="alert('Login Successful')">Login</button>
+
+    <h3>2. Available Services</h3>
+    <select id="service">
+    <option>Hair Cut - Rs.200</option>
+    <option>Facial - Rs.500</option>
+    <option>Hair Spa - Rs.700</option>
+    <option>Makeup - Rs.1500</option>
+    </select>
+
+    <h3>3. Choose Stylist</h3>
+    <select id="stylist">
+    <option>Priya</option><option>Divya</option><option>Anu</option>
+    </select>
+
+    <h3>4. Appointment Date and Time</h3>
+    <input type="date" id="date">
+    <select id="time">
+    <option>10 AM</option><option>11 AM</option>
+    <option>12 PM</option><option>2 PM</option>
+    </select>
+    <button onclick="book()">Book Appointment</button>
+    <p id="msg"></p>
+
+    <h3>5. My Appointments</h3>
+    <p id="app">No Appointments</p>
+    <button onclick="app.innerHTML=msg.innerHTML">View Appointments</button>
+    <button onclick="app.innerHTML='Appointment Cancelled'">Cancel Appointment</button>
+
+    <h3>6. Customer Feedback</h3>
+    <textarea id="feedback" placeholder="Enter Feedback"></textarea>
+    <button onclick="alert('Feedback Submitted')">Submit</button>
+
+    <h3>7. Salon Manager Report</h3>
+    <button onclick="alert('Appointment Report')">View Report</button>
+
+    <script>
+    let count=0;
+    function book(){
+    if(!date.value)return alert("Select Date");
+    count++;
+    msg.innerHTML="Booking ID: "+count+"<br>"+service.value+"<br>"+stylist.value+"<br>"+date.value+" "+time.value;
+    }
+    </script>
+
+</body>
+</html>

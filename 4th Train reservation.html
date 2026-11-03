@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Train Reservation</title>
+</head>
+<body>
+    <h1>Online Train Reservation System</h1>
+    <h2>1. Registration</h2>
+        <form onsubmit="alert('Registered');return false">
+        <input placeholder="Name" required>
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <button>Register</button>
+        </form>
+    <h2>2. Login</h2>
+        <input placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button onclick="alert('Login Successful')">Login</button>
+        <p id="message"></p>
+    <h2>3. Admin - Add Train</h2>
+        <input id="train" placeholder="Train Name">
+        <input id="from" placeholder="From">
+        <input id="to" placeholder="To">
+        <input type="number" id="fare" placeholder="Fare">
+        <button onclick="addTrain()">Add Train</button>
+        <p id="trainResult"></p>
+    <h2>4. Search Train</h2>
+        <input id="search" placeholder="Train Name">
+        <button onclick="searchTrain()">Search</button>
+        <p id="result"></p>
+    <h2>5. Check PNR Status</h2>
+        <input placeholder="PNR Number">
+        <button onclick="alert('Ticket Confirmed')">Check</button>
+    <h2>6. Cancel Ticket</h2>
+        <button onclick="alert('Ticket Cancelled')">Cancel</button>
+    <h2>7. Booking History</h2>
+        <button onclick="showHistory()">View History</button>
+        <p id="history"></p>
+    <h2>8. Admin - Payment Report</h2>
+        <button onclick="report()">View Report</button>
+        <p id="report"></p>
+
+    <script>
+    let trains = [];
+    let bookings = [];
+
+    function addTrain() {
+        trains.push(train.value);
+        trainResult.innerHTML = "Train Added";
+    }
+
+    function searchTrain() {
+        result.innerHTML = trains.includes(search.value) ?
+        "Train Available" : "Train Not Found";
+    }
+
+    function book() {
+        bookings.push("Ticket Booked");
+        alert("Booking Successful");
+    }
+
+    function showHistory() {
+        history.innerHTML = bookings.join("<br>");
+    }
+
+    function report() {
+        reportResult = "Total Bookings: " + bookings.length;
+        document.getElementById("report").innerHTML = reportResult;
+    }
+    </script>
+
+</body>
+</html>

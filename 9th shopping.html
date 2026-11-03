@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>TechSavvy</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eee}
+h1{background:navy;color:white;padding:12px}
+.box,.card{background:white;padding:10px;margin:10px}
+.card{display:inline-block}
+button{background:navy;color:white;padding:7px;margin:4px}
+img{width:100px;height:80px}
+</style>
+</head>
+<body>
+
+<h1>TechSavvy Shopping</h1>
+
+<div class="box">
+<h3>Login / Register</h3>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button onclick="alert('Registered Successfully')">Register</button>
+</div>
+
+<div class="box">
+<h3>Categories</h3>
+<button onclick="show('All')">All</button>
+<button onclick="show('Mobile')">Mobiles</button>
+<button onclick="show('Laptop')">Laptops</button>
+<button onclick="show('Tablet')">Tablets</button>
+<button onclick="show('Accessories')">Accessories</button><br>
+<input id="s" placeholder="Search">
+<button onclick="show('All')">Search</button>
+</div>
+
+<div id="products"></div>
+<div class="box"><h3>Product Details</h3><p id="details">Select Product</p></div>
+
+<div class="box">
+<h3>Shopping Cart</h3>
+<p id="cart">Cart Empty</p>
+<p id="total">Total: ₹0</p>
+<button onclick="removeItem()">Remove Item</button>
+<button onclick="checkout()">Checkout</button>
+</div>
+
+<div class="box">
+<h3>Order Status / History</h3>
+<p id="orders">No Orders</p>
+</div>
+
+<div class="box">
+<h3>Admin Panel</h3>
+<input id="name" placeholder="Product Name">
+<input id="price" placeholder="Price">
+<button onclick="addProduct()">Add</button>
+<button onclick="deleteProduct()">Remove Product</button>
+</div>
+
+<div class="box">
+<button onclick="logout()">Logout</button>
+</div>
+
+<script>
+let data=[["Mobile",15000],["Laptop",45000],["Tablet",12000],["Accessories",1500]],items=[],history=[];
+
+function login(){
+if(user.value&&pass.value)alert("Welcome "+user.value);
+else alert("Enter Username and Password");
+}
+
+function show(c){
+products.innerHTML="";
+data.forEach((p,i)=>{
+if((c=="All"||p[0]==c)&&p[0].toLowerCase().includes(s.value.toLowerCase()))
+products.innerHTML+=`<div class="card"><h3>${p[0]}</h3>₹${p[1]}<br><button onclick="details.innerHTML='${p[0]} ₹${p[1]}'">View</button><button onclick="items.push(${i});showCart()">Add</button></div>`;
+});
+}
+
+function showCart(){
+cart.innerHTML=items.map(i=>data[i][0]+" ₹"+data[i][1]).join("<br>")||"Cart Empty";
+total.innerHTML="Total: ₹"+items.reduce((a,i)=>a+data[i][1],0);
+}
+
+function removeItem(){items.pop();showCart()}
+
+function checkout(){
+if(!items.length)return alert("Cart Empty");
+history.push(items.map(i=>data[i][0]).join(", "));
+orders.innerHTML="Order Placed: "+history.join("<br>");
+items=[];showCart();alert("Order Successful");
+}
+
+function addProduct(){
+if(name.value&&price.value){data.push([name.value,+price.value]);show("All");}
+}
+
+function deleteProduct(){data.pop();show("All")}
+function logout(){user.value="";pass.value="";alert("Logged Out")}
+
+show("All");
+</script>
+</body>
+</html>

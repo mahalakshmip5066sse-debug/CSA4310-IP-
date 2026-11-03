@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Flight Reservation System</title>
+</head>
+<body>
+    <h2>Flight Reservation System</h2>
+    <h3>1. Login</h3>
+    <input id="user" placeholder="Username">
+    <input id="pass" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <h3>2. Search Flight</h3>
+    <input id="from" placeholder="From">
+    <input id="to" placeholder="To">
+    <button onclick="search()">Search</button>
+    <p id="result"></p>
+    <h3>3. Book Ticket / Payment</h3>
+    <input id="name" placeholder="Passenger Name">
+    <input id="seat" placeholder="Seat Number">
+    <button onclick="book()">Book Ticket</button>
+    <h3>4. My Ticket / Booking Status</h3>
+    <input id="pnr" placeholder="Enter PNR">
+    <button onclick="check()">Check Status</button>
+    <p id="ticket"></p>
+    <h3>5. Cancel Ticket</h3>
+    <button onclick="cancel()">Cancel Ticket</button>
+    <h3>6. Print Ticket</h3>
+    <button onclick="printTicket()">Print Ticket</button>
+    <h3>7. Customer Feedback</h3>
+    <input id="feedback" placeholder="Enter Feedback">
+    <button onclick="sendFeedback()">Submit</button>
+    <h3>8. Admin Report</h3>
+    <button onclick="report()">View Report</button>
+    <p id="report"></p>
+
+    <script>
+    let flights=[
+    {id:101,from:"Chennai",to:"Delhi",fare:4500,seats:20},
+    {id:102,from:"Bangalore",to:"Mumbai",fare:3500,seats:15}
+    ];
+    let bookings=[],selected=null,logged=false,id=1000;
+
+    function login(){
+    logged=!!(user.value&&pass.value);
+    alert(logged?"Login Successful":"Enter Details");
+    }
+
+    function search(){
+    selected=flights.find(f=>f.from.toLowerCase()==from.value.toLowerCase()&&
+    f.to.toLowerCase()==to.value.toLowerCase()&&f.seats>0);
+    result.innerHTML=selected?"Flight: "+selected.id+" Fare: ₹"+selected.fare:"No Flight Found";
+    }
+
+    function book(){
+    if(!logged||!selected||!name.value||!seat.value)
+    return alert("Login and enter details");
+    if(bookings.some(b=>b.flight==selected.id&&b.seat==seat.value&&!b.cancelled))
+    return alert("Seat Already Booked");
+    if(confirm("Confirm Payment?")){
+    let b={pnr:++id,name:name.value,seat:seat.value,
+    flight:selected.id,cancelled:false};
+    bookings.push(b);
+    selected.seats--;
+    pnr.value=b.pnr;
+    alert("Booking Successful! PNR: "+b.pnr);
+    }
+    }
+
+    function check(){
+    let b=bookings.find(x=>x.pnr==pnr.value);
+    ticket.innerHTML=b?(b.cancelled?"Cancelled":"Confirmed")+
+    "<br>Name: "+b.name+"<br>Seat: "+b.seat+
+    "<br>Flight: "+b.flight:"Ticket Not Found";
+    }
+
+    function cancel(){
+    let b=bookings.find(x=>x.pnr==pnr.value&&!x.cancelled);
+    if(b){
+    b.cancelled=true;
+    flights.find(f=>f.id==b.flight).seats++;
+    alert("Ticket Cancelled");
+    }else alert("Invalid PNR");
+    }
+
+    function printTicket(){
+    check();
+    if(ticket.innerHTML!="Ticket Not Found"&&!ticket.innerHTML.includes("Cancelled"))
+    window.print();
+    }
+
+    function sendFeedback(){
+    if(feedback.value)alert("Feedback Submitted");
+    else alert("Enter Feedback");
+    }
+
+    function report(){
+    reportText="Total Bookings: "+bookings.length+
+    "<br>Active Bookings: "+bookings.filter(b=>!b.cancelled).length;
+    report.innerHTML=reportText;
+    }
+    </script>
+
+</body>
+</html>
